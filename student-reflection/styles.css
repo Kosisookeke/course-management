@@ -1,4 +1,3 @@
-/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +23,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Header styles */
 header {
     display: flex;
     justify-content: space-between;
@@ -75,7 +73,6 @@ header h1 {
     box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
-/* Main content styles */
 main {
     display: grid;
     gap: 30px;
@@ -106,14 +103,12 @@ section h3 {
     color: #495057;
 }
 
-/* Welcome section */
 .welcome-section p {
     font-size: 1.1rem;
     color: #6c757d;
     line-height: 1.8;
 }
 
-/* Form styles */
 .reflection-form {
     background: linear-gradient(145deg, #f8f9fa, #ffffff);
 }
@@ -147,7 +142,6 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Rating section */
 .rating-section {
     margin: 30px 0;
     padding: 20px;
@@ -196,7 +190,6 @@ textarea:focus {
     font-style: italic;
 }
 
-/* Button styles */
 button {
     padding: 12px 25px;
     border: none;
@@ -231,34 +224,6 @@ button {
     box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
 }
 
-/* Technical info section */
-.technical-info {
-    background: linear-gradient(145deg, #e3f2fd, #ffffff);
-    border-left: 4px solid #2196f3;
-}
-
-.tech-details ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.tech-details li {
-    padding: 8px 0;
-    padding-left: 25px;
-    position: relative;
-    color: #495057;
-}
-
-.tech-details li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #28a745;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-/* Footer styles */
 footer {
     text-align: center;
     padding: 20px 0;
@@ -271,7 +236,6 @@ footer p {
     margin: 5px 0;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .container {
         margin: 10px;
@@ -327,7 +291,6 @@ footer p {
     }
 }
 
-/* Animation for language switching */
 .fade-out {
     opacity: 0;
     transition: opacity 0.2s ease-out;
@@ -338,7 +301,6 @@ footer p {
     transition: opacity 0.2s ease-in;
 }
 
-/* Loading state */
 .loading {
     position: relative;
     pointer-events: none;
