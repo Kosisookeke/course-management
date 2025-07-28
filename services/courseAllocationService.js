@@ -58,12 +58,24 @@ const updateCourseOffering = async (id, data, user) => {
     throw new Error('Unauthorized');
   }
 
-  const [updatedRowsCount, [updatedOffering]] = await CourseOffering.update(data, {
-    where: { id },
-    returning: true, // Postgres only, but Sequelize handles it
-    plain: true
+  const [updatedRowsCount] = await CourseOffering.update(data, {
+    where: { id }
   });
-  return updatedRowsCount > 0 ? updatedOffering : null;
+  
+  if (updatedRowsCount > 0) {
+    // Fetch the updated record
+    const updatedOffering = await CourseOffering.findByPk(id, {
+      include: [
+        { model: Module, as: 'module' },
+        { model: Class, as: 'class' },
+        { model: Cohort, as: 'cohort' },
+        { model: Mode, as: 'mode' },
+        { model: User, as: 'facilitator' }
+      ]
+    });
+    return updatedOffering;
+  }
+  return null;
 };
 
 const deleteCourseOffering = async (id, user) => {

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page.title">Course Reflection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 data-i18n="header.title">Course Management Platform - Student Reflection</h1>
+            <div class="language-switcher">
+                <label data-i18n="language.label">Language:</label>
+                <select id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                </select>
+            </div>
+        </header>
+
+        <main>
+            <section class="welcome-section">
+                <h2 data-i18n="welcome.title">Welcome to Your Course Reflection</h2>
+                <p data-i18n="welcome.message">Take a moment to reflect on your learning journey with our Course Management Platform. Your feedback helps us improve the experience for future students.</p>
+            </section>
+
+            <section class="reflection-form">
+                <h3 data-i18n="form.title">Reflection Questions</h3>
+                
+                <div class="question-group">
+                    <label data-i18n="questions.question1">What did you enjoy most about the course?</label>
+                    <textarea id="answer1" rows="4" data-i18n-placeholder="placeholders.answer1"></textarea>
+                </div>
+
+                <div class="question-group">
+                    <label data-i18n="questions.question2">What was the most challenging part of the course?</label>
+                    <textarea id="answer2" rows="4" data-i18n-placeholder="placeholders.answer2"></textarea>
+                </div>
+
+                <div class="question-group">
+                    <label data-i18n="questions.question3">What could be improved in the course?</label>
+                    <textarea id="answer3" rows="4" data-i18n-placeholder="placeholders.answer3"></textarea>
+                </div>
+
+                <div class="rating-section">
+                    <label data-i18n="rating.label">Overall Course Rating:</label>
+                    <div class="star-rating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <span id="ratingText" data-i18n="rating.default">Click to rate</span>
+                </div>
+
+                <button id="submitBtn" data-i18n="buttons.submit">Submit Reflection</button>
+                <button id="clearBtn" data-i18n="buttons.clear">Clear All</button>
+            </section>
+            
+        </main>
+
+        <footer>
+            <p data-i18n="footer.text">Created as part of the Course Management Platform project</p>
+            <p data-i18n="footer.year">© 2025 - Student Reflection Module</p>
+        </footer>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
