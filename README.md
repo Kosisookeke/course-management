@@ -50,17 +50,20 @@ A comprehensive platform for managing course allocations, facilitator activities
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/course-management.git
    cd course-management
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up the database:
+
    ```bash
    npx sequelize-cli db:create
    npx sequelize-cli db:migrate
@@ -68,6 +71,7 @@ A comprehensive platform for managing course allocations, facilitator activities
    ```
 
 4. Start the server:
+
    ```bash
    npm start
    ```
@@ -109,29 +113,35 @@ REDIS_DB=0
 The application uses the following main models:
 
 ### User
+
 - **id**: Primary key
 - **email**: Unique email address
 - **password**: Hashed password
 - **role**: Role (manager, facilitator, student)
 
 ### Module
+
 - **id**: Primary key
 - **name**: Module name
 - **code**: Module code
 
 ### Class
+
 - **id**: Primary key
 - **name**: Class name
 
 ### Cohort
+
 - **id**: Primary key
 - **name**: Cohort name
 
 ### Mode
+
 - **id**: Primary key
 - **name**: Delivery mode (online, in-person, hybrid)
 
 ### CourseOffering
+
 - **id**: Primary key
 - **moduleId**: Foreign key to Module
 - **classId**: Foreign key to Class
@@ -142,6 +152,7 @@ The application uses the following main models:
 - **facilitatorId**: Foreign key to User (facilitator)
 
 ### ActivityTracker
+
 - **id**: Primary key
 - **allocationId**: Foreign key to CourseOffering
 - **weekNumber**: Week number
@@ -154,6 +165,7 @@ The application uses the following main models:
 - **gradeBookStatus**: Status (Done, Pending, Not Started)
 
 ### Notification
+
 - **id**: Primary key
 - **type**: Type (facilitator_reminder, manager_alert, deadline_warning)
 - **recipientId**: Foreign key to User
@@ -169,17 +181,20 @@ The application uses the following main models:
 ## Authentication Flow
 
 1. **Registration**:
+
    - User submits email, password, and role
    - Password is hashed using bcrypt
    - User record is created in the database
 
 2. **Login**:
+
    - User submits email and password
    - System verifies credentials
    - If valid, a JWT token is generated and returned
    - Token contains user ID and role for authorization
 
 3. **Authentication**:
+
    - Client includes JWT token in Authorization header
    - Server validates token for each protected request
    - If token is invalid or expired, 401 Unauthorized is returned
@@ -276,19 +291,23 @@ If you're having issues running the application locally, here are some common pr
    The application requires Redis for the notification system. If Redis is not running, you'll see a warning but the server will still start without notification features.
 
    To start Redis on Windows:
+
    ```
    Start Menu > Redis > Redis Server
    ```
 
    Alternatively, you can run Redis as a Windows service:
+
    ```
    Start Menu > Redis > Redis Service Start
    ```
 
    To verify Redis is running:
+
    ```
    redis-cli ping
    ```
+
    You should receive a response of "PONG".
 
 2. **Installing Redis**
@@ -304,19 +323,23 @@ If you're having issues running the application locally, here are some common pr
    The application requires MySQL for the database. If MySQL is not running, the server will fail to start.
 
    To start MySQL on Windows:
+
    ```
    Start Menu > MySQL > MySQL Server > Start MySQL Server
    ```
 
    Alternatively, you can run MySQL as a Windows service:
+
    ```
    net start mysql
    ```
 
    To verify MySQL is running:
+
    ```
    mysql -u root -p
    ```
+
    Enter your password when prompted.
 
 2. **Installing MySQL**
@@ -324,22 +347,27 @@ If you're having issues running the application locally, here are some common pr
    If MySQL is not installed, download and install it from the [MySQL website](https://dev.mysql.com/downloads/installer/).
 
    During installation, make sure to:
+
    - Set the root password to match the one in your .env file
    - Configure MySQL to start automatically
 
 3. **Creating the Database**
 
    If the database doesn't exist, create it:
+
    ```
    mysql -u root -p
    ```
+
    Enter your password when prompted, then run:
+
    ```
    CREATE DATABASE course_management_db;
    EXIT;
    ```
 
    Then run the migrations:
+
    ```
    npx sequelize-cli db:migrate
    npx sequelize-cli db:seed:all
@@ -350,20 +378,23 @@ If you're having issues running the application locally, here are some common pr
 1. **Port Already in Use**
 
    If port 3000 is already in use, you can change the port in the .env file:
+
    ```
    PORT=3001
    ```
 
-   Then access the application at http://localhost:3001 instead.
+   Then access the application at http://localhost:3000 instead.
 
 2. **Checking for Port Conflicts**
 
    To check if port 3000 is already in use:
+
    ```
    netstat -ano | findstr :3000
    ```
 
    If it shows a process using the port, you can either:
+
    - Change the port in the .env file
    - Terminate the process using the port
 
@@ -372,6 +403,7 @@ If you're having issues running the application locally, here are some common pr
 1. **Node.js Version**
 
    Ensure you're using Node.js v14 or higher:
+
    ```
    node -v
    ```
@@ -379,6 +411,7 @@ If you're having issues running the application locally, here are some common pr
 2. **NPM Dependencies**
 
    If you're getting module not found errors, try reinstalling dependencies:
+
    ```
    npm ci
    ```
@@ -390,6 +423,7 @@ If you're having issues running the application locally, here are some common pr
 4. **Database Connection**
 
    If you're having issues connecting to the database, verify:
+
    - MySQL is running
    - The credentials in your .env file match your MySQL installation
    - The database exists
@@ -397,6 +431,7 @@ If you're having issues running the application locally, here are some common pr
 5. **Sequelize Errors**
 
    If you're getting Sequelize errors, try:
+
    ```
    npx sequelize-cli db:drop
    npx sequelize-cli db:create
