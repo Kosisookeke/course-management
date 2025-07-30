@@ -33,7 +33,7 @@ A comprehensive platform for managing course allocations, facilitator activities
 ## Technology Stack
 
 - **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL with Sequelize ORM
+- **Database**: MySQL with Sequelize ORM
 - **Authentication**: JWT (JSON Web Tokens)
 - **Queue System**: Redis with Bull
 - **Documentation**: Swagger/OpenAPI
@@ -44,7 +44,7 @@ A comprehensive platform for managing course allocations, facilitator activities
 ### Prerequisites
 
 - Node.js (v14 or higher)
-- PostgreSQL (v12 or higher)
+- MySQL (v5.7 or higher)
 - Redis (v6 or higher)
 
 ### Installation
@@ -87,12 +87,11 @@ PORT=3000
 NODE_ENV=development
 
 # Database Configuration
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
-DB_DATABASE=course_management
 DB_HOST=localhost
-DB_PORT=5432
-DB_DIALECT=postgres
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=course_management_db
 
 # JWT Configuration
 JWT_SECRET=your_jwt_secret
@@ -192,13 +191,32 @@ The application uses the following main models:
 
 ## API Documentation
 
-The API documentation is available at `/api-docs` when the server is running. It provides detailed information about all endpoints, including:
+The API documentation is available at `/api-docs` when the server is running. You can access it by navigating to:
+
+```
+http://localhost:3000/api-docs
+```
+
+The documentation is generated using Swagger/OpenAPI and provides comprehensive information about all endpoints, including:
 
 - Request parameters
 - Request body schemas
 - Response schemas
 - Authentication requirements
 - Example requests and responses
+
+### Using the Swagger UI
+
+1. Start the server with `npm start`
+2. Open your browser and navigate to `http://localhost:3000/api-docs`
+3. You'll see the Swagger UI with all available endpoints grouped by tags
+4. Expand any endpoint to see detailed documentation
+5. You can try out endpoints directly from the UI by clicking the "Try it out" button
+6. For authenticated endpoints, you'll need to:
+   - Login using the `/api/auth/login` endpoint to get a token
+   - Click the "Authorize" button at the top of the page
+   - Enter your token in the format: `Bearer your-token-here`
+   - Click "Authorize" to use the token for all subsequent requests
 
 ## Core Flows
 
@@ -246,6 +264,145 @@ The notification system uses Redis queues to process notifications asynchronousl
 1. **Facilitator Reminders**: Reminders for facilitators to submit activity logs
 2. **Manager Alerts**: Alerts for managers about missing or late submissions
 3. **Deadline Warnings**: Warnings about upcoming deadlines
+
+## Troubleshooting
+
+If you're having issues running the application locally, here are some common problems and their solutions:
+
+### Redis Issues
+
+1. **Redis Not Running**
+
+   The application requires Redis for the notification system. If Redis is not running, you'll see a warning but the server will still start without notification features.
+
+   To start Redis on Windows:
+   ```
+   Start Menu > Redis > Redis Server
+   ```
+
+   Alternatively, you can run Redis as a Windows service:
+   ```
+   Start Menu > Redis > Redis Service Start
+   ```
+
+   To verify Redis is running:
+   ```
+   redis-cli ping
+   ```
+   You should receive a response of "PONG".
+
+2. **Installing Redis**
+
+   If Redis is not installed, run the Redis-x64-3.0.504.msi installer in the project root directory.
+
+   After installation, start the Redis service as described above.
+
+### MySQL Issues
+
+1. **MySQL Not Running**
+
+   The application requires MySQL for the database. If MySQL is not running, the server will fail to start.
+
+   To start MySQL on Windows:
+   ```
+   Start Menu > MySQL > MySQL Server > Start MySQL Server
+   ```
+
+   Alternatively, you can run MySQL as a Windows service:
+   ```
+   net start mysql
+   ```
+
+   To verify MySQL is running:
+   ```
+   mysql -u root -p
+   ```
+   Enter your password when prompted.
+
+2. **Installing MySQL**
+
+   If MySQL is not installed, download and install it from the [MySQL website](https://dev.mysql.com/downloads/installer/).
+
+   During installation, make sure to:
+   - Set the root password to match the one in your .env file
+   - Configure MySQL to start automatically
+
+3. **Creating the Database**
+
+   If the database doesn't exist, create it:
+   ```
+   mysql -u root -p
+   ```
+   Enter your password when prompted, then run:
+   ```
+   CREATE DATABASE course_management_db;
+   EXIT;
+   ```
+
+   Then run the migrations:
+   ```
+   npx sequelize-cli db:migrate
+   npx sequelize-cli db:seed:all
+   ```
+
+### Port Issues
+
+1. **Port Already in Use**
+
+   If port 3000 is already in use, you can change the port in the .env file:
+   ```
+   PORT=3001
+   ```
+
+   Then access the application at http://localhost:3001 instead.
+
+2. **Checking for Port Conflicts**
+
+   To check if port 3000 is already in use:
+   ```
+   netstat -ano | findstr :3000
+   ```
+
+   If it shows a process using the port, you can either:
+   - Change the port in the .env file
+   - Terminate the process using the port
+
+### Other Common Issues
+
+1. **Node.js Version**
+
+   Ensure you're using Node.js v14 or higher:
+   ```
+   node -v
+   ```
+
+2. **NPM Dependencies**
+
+   If you're getting module not found errors, try reinstalling dependencies:
+   ```
+   npm ci
+   ```
+
+3. **Environment Variables**
+
+   Make sure your .env file exists and contains all required variables as shown in the Environment Configuration section.
+
+4. **Database Connection**
+
+   If you're having issues connecting to the database, verify:
+   - MySQL is running
+   - The credentials in your .env file match your MySQL installation
+   - The database exists
+
+5. **Sequelize Errors**
+
+   If you're getting Sequelize errors, try:
+   ```
+   npx sequelize-cli db:drop
+   npx sequelize-cli db:create
+   npx sequelize-cli db:migrate
+   npx sequelize-cli db:seed:all
+   ```
 
 ## Testing
 
