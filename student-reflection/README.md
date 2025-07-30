@@ -83,100 +83,10 @@ translations = {
 2. **Open index.html** in a web browser to test locally
 3. **Modify translations.js** to add new languages or update text
 4. **Customize styles.css** for different themes or branding
-5. **Deploy to GitHub Pages** or any static hosting service
+5. **Deploy to Netlify hosting service**
 
-## GitHub Pages Deployment
-
-### Quick Setup
-
-1. Create a new repository on GitHub
-2. Upload all files to the repository
-3. Go to Settings → Pages
-4. Select "Deploy from a branch"
-5. Choose "main" branch and "/ (root)" folder
-6. Your page will be available at: `https://username.github.io/repository-name`
-
-### File Checklist for Deployment
-
-- ✅ index.html (main page)
-- ✅ styles.css (styling)
-- ✅ script.js (functionality)
-- ✅ translations.js (i18n data)
-- ✅ README.md (documentation)
-
-## Browser Compatibility
-
-- ✅ Chrome 60+
-- ✅ Firefox 55+
-- ✅ Safari 12+
-- ✅ Edge 79+
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Accessibility Features
-
-- **Keyboard navigation** for all interactive elements
-- **ARIA labels** for screen readers
-- **High contrast** color scheme
-- **Responsive text sizing**
-- **Focus indicators** for keyboard users
-
-## Customization Options
-
-### Adding New Languages
-
-1. Add language code to the `translations` object in `translations.js`
-2. Add corresponding option to the language selector in `index.html`
-3. Translate all keys following the existing pattern
-
-### Modifying Questions
-
-1. Update the HTML structure in `index.html`
-2. Add corresponding translation keys in `translations.js`
-3. Update JavaScript if additional functionality is needed
-
-### Styling Changes
-
-1. Modify CSS variables at the top of `styles.css` for quick theme changes
-2. Update gradient colors, fonts, or spacing as needed
-3. Ensure responsive design is maintained
-
-## Development Features
-
-### Debug Functions
-
-- `exportReflectionData()` - Export all data as JSON
-- `reflectionApp.getAllSubmissions()` - View all submissions
-- Console logging for development insights
-
-### Local Storage Keys
-
-- `reflectionLanguage` - Current language preference
-- `reflectionRating` - Current star rating
-- `reflectionAnswers` - Draft answers object
-- `reflectionSubmissions` - Array of submitted reflections
-
-## Performance Optimizations
-
-- **Minimal dependencies** (vanilla JavaScript only)
-- **Efficient DOM manipulation** with event delegation
-- **Lazy loading** of non-critical features
-- **Compressed assets** ready for production
-
-## Security Considerations
-
-- **Client-side only** - no server-side data transmission
-- **Local storage** - data stays on user's device
-- **No external dependencies** - reduces attack surface
-- **Input sanitization** for display purposes
-
-## Future Enhancements
-
-- [ ] Additional language support (German, Italian, etc.)
-- [ ] Dark/light theme toggle
-- [ ] Print-friendly version
-- [ ] PDF export functionality
-- [ ] Integration with course management API
-- [ ] Advanced analytics and reporting
+## Netflify Pages Deployment
+Webpage is available at: `https://studentsref.netlify.app/`
 
 ## Support
 
