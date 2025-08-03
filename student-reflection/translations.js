@@ -1,4 +1,3 @@
-// Translations object for internationalization (i18n)
 const translations = {
     en: {
         "page.title": "Course Reflection",
@@ -107,7 +106,6 @@ const translations = {
     }
 };
 
-// Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = translations;
 }

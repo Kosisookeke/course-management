@@ -7,10 +7,8 @@ describe('Notification System', () => {
   let managerToken, facilitatorToken, testData;
 
   beforeAll(async () => {
-    // Initialize database
     await sequelize.sync({ force: true });
 
-    // Create test data
     const manager = await User.create({ 
       email: 'testmanager@example.com', 
       password: 'password123', 

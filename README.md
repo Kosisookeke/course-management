@@ -52,7 +52,7 @@ A comprehensive platform for managing course allocations, facilitator activities
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/course-management.git
+   git clone https://github.com/Kosisookeke/course-management.git
    cd course-management
    ```
 
@@ -73,7 +73,7 @@ A comprehensive platform for managing course allocations, facilitator activities
 4. Start the server:
 
    ```bash
-   npm start
+    npm run dev
    ```
 
 5. Access the API documentation:
@@ -222,7 +222,7 @@ The documentation is generated using Swagger/OpenAPI and provides comprehensive 
 
 ### Using the Swagger UI
 
-1. Start the server with `npm start`
+1. Start the server with `npm run dev`
 2. Open your browser and navigate to `http://localhost:3000/api-docs`
 3. You'll see the Swagger UI with all available endpoints grouped by tags
 4. Expand any endpoint to see detailed documentation
@@ -373,34 +373,7 @@ If you're having issues running the application locally, here are some common pr
    npx sequelize-cli db:seed:all
    ```
 
-### Port Issues
-
-1. **Port Already in Use**
-
-   If port 3000 is already in use, you can change the port in the .env file:
-
-   ```
-   PORT=3001
-   ```
-
-   Then access the application at http://localhost:3000 instead.
-
-2. **Checking for Port Conflicts**
-
-   To check if port 3000 is already in use:
-
-   ```
-   netstat -ano | findstr :3000
-   ```
-
-   If it shows a process using the port, you can either:
-
-   - Change the port in the .env file
-   - Terminate the process using the port
-
-### Other Common Issues
-
-1. **Node.js Version**
+4. **Node.js Version**
 
    Ensure you're using Node.js v14 or higher:
 
@@ -408,7 +381,7 @@ If you're having issues running the application locally, here are some common pr
    node -v
    ```
 
-2. **NPM Dependencies**
+5. **NPM Dependencies**
 
    If you're getting module not found errors, try reinstalling dependencies:
 
@@ -416,11 +389,11 @@ If you're having issues running the application locally, here are some common pr
    npm ci
    ```
 
-3. **Environment Variables**
+6. **Environment Variables**
 
    Make sure your .env file exists and contains all required variables as shown in the Environment Configuration section.
 
-4. **Database Connection**
+7. **Database Connection**
 
    If you're having issues connecting to the database, verify:
 
@@ -428,7 +401,7 @@ If you're having issues running the application locally, here are some common pr
    - The credentials in your .env file match your MySQL installation
    - The database exists
 
-5. **Sequelize Errors**
+8. **Sequelize Errors**
 
    If you're getting Sequelize errors, try:
 

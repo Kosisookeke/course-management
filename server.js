@@ -7,16 +7,13 @@ const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    // Initialize database connection
     await sequelize.authenticate();
     console.log('✅ Database connection has been established successfully.');
 
-    // Initialize Redis connection
     try {
       await initializeRedis();
       console.log('✅ Redis connection established successfully.');
 
-      // Initialize notification queue service
       await notificationQueueService.initialize();
       console.log('✅ Notification queue service initialized successfully.');
     } catch (redisError) {
@@ -35,7 +32,6 @@ const startServer = async () => {
   }
 };
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Received SIGINT, shutting down gracefully...');
   try {

@@ -92,10 +92,8 @@ async function testAPIIntegration() {
     if (lateResponse.status === 201) {
       console.log('   ✅ Late activity log submitted successfully');
       
-      // Wait for notification processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Check if late submission notifications were created
       const lateNotifications = await Notification.findAll({
         include: [{ model: User, as: 'recipient' }],
         order: [['createdAt', 'DESC']]
@@ -122,8 +120,7 @@ async function testAPIIntegration() {
     }
 
     console.log('\n3️⃣ Testing Manager Access to Notifications...');
-    
-    // Test if managers can view activity logs (which would show compliance)
+   
     const managerViewResponse = await request(app)
       .get('/api/facilitator-activities')
       .set('Authorization', `Bearer ${managerToken}`);
@@ -135,7 +132,6 @@ async function testAPIIntegration() {
 
     console.log('\n4️⃣ Testing Facilitator Access Restrictions...');
     
-    // Test if facilitators can only see their own logs
     const facilitatorViewResponse = await request(app)
       .get('/api/facilitator-activities')
       .set('Authorization', `Bearer ${facilitatorToken}`);
@@ -145,7 +141,6 @@ async function testAPIIntegration() {
       const facilitatorLogs = facilitatorViewResponse.body;
       console.log(`   ✅ Facilitator can view their logs: ${facilitatorLogs.length} records`);
       
-      // Verify all logs belong to this facilitator
       const allBelongToFacilitator = facilitatorLogs.every(log => 
         log.courseOffering && log.courseOffering.facilitatorId === facilitator.id
       );
@@ -169,7 +164,6 @@ async function testAPIIntegration() {
     console.log(`   📊 Activity Logs: ${totalActivityLogs}`);
     console.log(`   🔔 Notifications: ${totalNotifications}`);
 
-    // Show recent notifications
     const recentNotifications = await Notification.findAll({
       include: [{ model: User, as: 'recipient' }],
       order: [['createdAt', 'DESC']],
@@ -201,5 +195,4 @@ async function testAPIIntegration() {
   }
 }
 
-// Run the test
 testAPIIntegration();

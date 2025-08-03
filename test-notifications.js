@@ -6,7 +6,6 @@ async function testNotificationSystem() {
   console.log('🧪 Starting Notification System Test...\n');
 
   try {
-    // Initialize connections
     console.log('1️⃣ Initializing connections...');
     await sequelize.authenticate();
     console.log('   ✅ Database connected');
@@ -17,7 +16,6 @@ async function testNotificationSystem() {
     await notificationQueueService.initialize();
     console.log('   ✅ Notification queue service initialized\n');
 
-    // Get test data
     console.log('2️⃣ Fetching test data...');
     const facilitator = await User.findOne({ 
       where: { role: 'facilitator' },
@@ -41,7 +39,6 @@ async function testNotificationSystem() {
     console.log(`   ✅ Found manager: ${manager.email}`);
     console.log(`   ✅ Found course offering: ID ${courseOffering.id}\n`);
 
-    // Test 1: Queue Facilitator Reminder
     console.log('3️⃣ Testing Facilitator Reminder...');
     const reminderResult = await notificationQueueService.queueFacilitatorReminder(
       facilitator.id,
@@ -50,7 +47,6 @@ async function testNotificationSystem() {
     );
     console.log(`   ✅ Queued facilitator reminder: Job ID ${reminderResult.job.id}`);
 
-    // Test 2: Queue Manager Alert
     console.log('4️⃣ Testing Manager Alert...');
     const alertResult = await notificationQueueService.queueManagerAlert(
       manager.id,
@@ -61,10 +57,8 @@ async function testNotificationSystem() {
     );
     console.log(`   ✅ Queued manager alert: Job ID ${alertResult.job.id}`);
 
-    // Test 3: Check Queue Statistics
     console.log('5️⃣ Checking queue statistics...');
     
-    // Wait a moment for jobs to process
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     const stats = await notificationQueueService.getQueueStats();
@@ -85,7 +79,6 @@ async function testNotificationSystem() {
     console.error('   2. Run database migrations: npm run db:migrate');
     console.error('   3. Seed test data: npm run db:seed:all');
   } finally {
-    // Cleanup
     try {
       await notificationQueueService.cleanup();
       await sequelize.close();
@@ -96,7 +89,6 @@ async function testNotificationSystem() {
   }
 }
 
-// Handle graceful shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Test interrupted, cleaning up...');
   try {
@@ -108,5 +100,4 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// Run the test
 testNotificationSystem();

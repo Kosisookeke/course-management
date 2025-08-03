@@ -12,15 +12,12 @@ class NotificationWorker {
 
   async initialize() {
     try {
-      // Initialize database connection
       await sequelize.authenticate();
       console.log('✅ Database connection established for worker');
 
-      // Initialize Redis connection
       await initializeRedis();
       console.log('✅ Redis connection established for worker');
 
-      // Initialize notification queue service
       await notificationQueueService.initialize();
       console.log('✅ Notification queue service initialized for worker');
 
@@ -37,7 +34,6 @@ class NotificationWorker {
       throw new Error('Worker not initialized. Call initialize() first.');
     }
 
-    // Schedule facilitator reminders - Run every Monday at 9:00 AM
     const facilitatorReminderJob = cron.schedule('0 9 * * 1', async () => {
       console.log('🔄 Running weekly facilitator reminder job...');
       await this.sendWeeklyFacilitatorReminders();
@@ -46,7 +42,6 @@ class NotificationWorker {
       timezone: 'UTC'
     });
 
-    // Schedule manager compliance alerts - Run every Tuesday at 10:00 AM
     const managerAlertJob = cron.schedule('0 10 * * 2', async () => {
       console.log('🔄 Running manager compliance alert job...');
       await this.checkComplianceAndAlertManagers();
@@ -55,7 +50,6 @@ class NotificationWorker {
       timezone: 'UTC'
     });
 
-    // Schedule deadline warnings - Run daily at 8:00 AM
     const deadlineWarningJob = cron.schedule('0 8 * * *', async () => {
       console.log('🔄 Running deadline warning job...');
       await this.sendDeadlineWarnings();
@@ -64,7 +58,6 @@ class NotificationWorker {
       timezone: 'UTC'
     });
 
-    // Schedule queue cleanup - Run every hour
     const cleanupJob = cron.schedule('0 * * * *', async () => {
       console.log('🔄 Running queue cleanup job...');
       await this.cleanupCompletedJobs();
@@ -73,7 +66,6 @@ class NotificationWorker {
       timezone: 'UTC'
     });
 
-    // Start all jobs
     facilitatorReminderJob.start();
     managerAlertJob.start();
     deadlineWarningJob.start();
@@ -92,7 +84,6 @@ class NotificationWorker {
     try {
       const currentWeek = this.getCurrentWeekNumber();
       
-      // Get all active course offerings with facilitators
       const courseOfferings = await CourseOffering.findAll({
         where: {
           facilitatorId: { [Op.not]: null }
@@ -107,7 +98,6 @@ class NotificationWorker {
       let remindersSent = 0;
 
       for (const offering of courseOfferings) {
-        // Check if facilitator has already submitted log for current week
         const existingLog = await ActivityTracker.findOne({
           where: {
             allocationId: offering.id,
@@ -115,7 +105,6 @@ class NotificationWorker {
           }
         });
 
-        // If no log exists, send reminder
         if (!existingLog) {
           await notificationQueueService.queueFacilitatorReminder(
             offering.facilitatorId,
@@ -137,12 +126,10 @@ class NotificationWorker {
       const currentWeek = this.getCurrentWeekNumber();
       const lastWeek = currentWeek - 1;
 
-      // Get all managers
       const managers = await User.findAll({
         where: { role: 'manager' }
       });
 
-      // Get all facilitators with their course offerings
       const facilitators = await User.findAll({
         where: { role: 'facilitator' },
         include: [{
@@ -159,7 +146,6 @@ class NotificationWorker {
 
       for (const facilitator of facilitators) {
         for (const offering of facilitator.courseOfferings) {
-          // Check for missing submissions in the last week
           const lastWeekLog = await ActivityTracker.findOne({
             where: {
               allocationId: offering.id,
@@ -168,7 +154,6 @@ class NotificationWorker {
           });
 
           if (!lastWeekLog) {
-            // Send alert to all managers about missing submission
             for (const manager of managers) {
               await notificationQueueService.queueManagerAlert(
                 manager.id,
@@ -184,7 +169,6 @@ class NotificationWorker {
             }
           }
 
-          // Check for compliance warnings (multiple missing submissions)
           const recentLogs = await ActivityTracker.findAll({
             where: {
               allocationId: offering.id,
@@ -200,7 +184,6 @@ class NotificationWorker {
             }
           }
 
-          // If facilitator missed 2 or more weeks in the last 4 weeks, send compliance warning
           if (missedWeeks.length >= 2) {
             for (const manager of managers) {
               await notificationQueueService.queueManagerAlert(
@@ -231,9 +214,7 @@ class NotificationWorker {
       const currentWeek = this.getCurrentWeekNumber();
       const currentDay = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-      // Send warnings on Thursday (day 4) for submissions due by end of week
       if (currentDay === 4) {
-        // Get all active course offerings with facilitators
         const courseOfferings = await CourseOffering.findAll({
           where: {
             facilitatorId: { [Op.not]: null }
@@ -248,7 +229,6 @@ class NotificationWorker {
         let warningsSent = 0;
 
         for (const offering of courseOfferings) {
-          // Check if facilitator has already submitted log for current week
           const existingLog = await ActivityTracker.findOne({
             where: {
               allocationId: offering.id,
@@ -256,7 +236,6 @@ class NotificationWorker {
             }
           });
 
-          // If no log exists, send deadline warning
           if (!existingLog) {
             const notification = await Notification.create({
               type: 'deadline_warning',
@@ -298,7 +277,6 @@ class NotificationWorker {
       const stats = await notificationQueueService.getQueueStats();
       console.log('📊 Queue statistics:', stats);
 
-      // Clean up completed jobs older than 24 hours
       for (const queue of Object.values(notificationQueueService.queues)) {
         await queue.clean(24 * 60 * 60 * 1000, 'completed');
         await queue.clean(24 * 60 * 60 * 1000, 'failed');
@@ -311,8 +289,6 @@ class NotificationWorker {
   }
 
   getCurrentWeekNumber() {
-    // Simple week calculation - in production, this should be more sophisticated
-    // based on academic calendar
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const pastDaysOfYear = (now - startOfYear) / 86400000;
@@ -322,23 +298,19 @@ class NotificationWorker {
   async stop() {
     console.log('🛑 Stopping Notification Worker...');
 
-    // Stop all cron jobs
     this.cronJobs.forEach(job => {
       job.stop();
       job.destroy();
     });
 
-    // Cleanup notification queues
     await notificationQueueService.cleanup();
 
-    // Close database connection
     await sequelize.close();
 
     this.isRunning = false;
     console.log('✅ Notification Worker stopped');
   }
 
-  // Manual trigger methods for testing
   async triggerFacilitatorReminders() {
     console.log('🔧 Manually triggering facilitator reminders...');
     await this.sendWeeklyFacilitatorReminders();
@@ -355,10 +327,8 @@ class NotificationWorker {
   }
 }
 
-// Export singleton instance
 const notificationWorker = new NotificationWorker();
 
-// Handle graceful shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Received SIGINT, shutting down gracefully...');
   await notificationWorker.stop();
@@ -373,7 +343,6 @@ process.on('SIGTERM', async () => {
 
 module.exports = notificationWorker;
 
-// If this file is run directly, start the worker
 if (require.main === module) {
   (async () => {
     try {

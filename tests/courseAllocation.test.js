@@ -9,7 +9,6 @@ describe('Course Allocation Endpoints', () => {
   beforeAll(async () => {
     await sequelize.sync({ force: true });
 
-    // Create test data
     const manager = await User.create({ email: 'testmanager@example.com', password: 'password123', role: 'manager' });
     const facilitator = await User.create({ email: 'testfacilitator@example.com', password: 'password123', role: 'facilitator' });
     const testModule = await Module.create({ name: 'Test Module', code: 'TM101', description: 'A test module' });
@@ -41,7 +40,7 @@ describe('Course Allocation Endpoints', () => {
       .post('/api/course-allocations')
       .set('Authorization', `Bearer ${managerToken}`)
       .send({
-        moduleId: 1, // Assuming IDs start from 1
+        moduleId: 1, 
         classId: 1,
         trimester: 'T2',
         cohortId: 1,
@@ -84,7 +83,6 @@ describe('Course Allocation Endpoints', () => {
   });
 
   it('should delete a course offering (Manager)', async () => {
-    // Create a new one to delete
     const newOffering = await CourseOffering.create({
       moduleId: 1,
       classId: 1,
@@ -112,6 +110,6 @@ describe('Course Allocation Endpoints', () => {
         intake: 'HT1',
         modeId: 1
       });
-    expect(res.statusCode).toEqual(403); // Forbidden
+    expect(res.statusCode).toEqual(403);
   });
 });

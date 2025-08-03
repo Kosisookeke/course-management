@@ -10,7 +10,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Security Middleware
 app.use(helmet());
 app.use(cors());
 const limiter = rateLimit({
@@ -19,20 +18,15 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
 app.use(express.static('public'));
 
-// Swagger Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Routes
 app.use('/api', routes);
 
-// Error handling middleware (should be last)
 app.use(errorHandler);
 
 module.exports = app;

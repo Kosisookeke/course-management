@@ -7,7 +7,6 @@ async function verifyDatabase() {
     await sequelize.authenticate();
     console.log('✅ Database connected');
 
-    // Check notification records
     console.log('📋 Checking notification records...');
     const notifications = await Notification.findAll({
       include: [
@@ -38,7 +37,6 @@ async function verifyDatabase() {
       console.log(`      Created: ${notification.createdAt}`);
     });
 
-    // Check notification counts by type
     console.log('\n📊 Notification statistics:');
     const facilitatorReminders = await Notification.count({ where: { type: 'facilitator_reminder' } });
     const managerAlerts = await Notification.count({ where: { type: 'manager_alert' } });
@@ -49,7 +47,6 @@ async function verifyDatabase() {
     console.log(`   Deadline Warnings: ${deadlineWarnings}`);
     console.log(`   Total: ${facilitatorReminders + managerAlerts + deadlineWarnings}`);
 
-    // Check notification status distribution
     console.log('\n📈 Status distribution:');
     const pending = await Notification.count({ where: { status: 'pending' } });
     const sent = await Notification.count({ where: { status: 'sent' } });
@@ -59,7 +56,6 @@ async function verifyDatabase() {
     console.log(`   Sent: ${sent}`);
     console.log(`   Failed: ${failed}`);
 
-    // Verify data integrity
     console.log('\n🔍 Data integrity checks:');
     const notificationsWithRecipients = await Notification.count({
       include: [{ model: User, as: 'recipient' }]
@@ -90,5 +86,4 @@ async function verifyDatabase() {
   }
 }
 
-// Run verification
 verifyDatabase();
