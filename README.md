@@ -56,6 +56,11 @@ A comprehensive platform for managing course allocations, facilitator activities
    cd course-management
    ```
 
+   ```video walkthrough
+   https://www.loom.com/share/57b3e738931642a98e808eb28324f798?sid=5f9ae676-5a6a-40be-a280-a342c8eba6c6
+
+   ```
+
 2. Install dependencies:
 
    ```bash
